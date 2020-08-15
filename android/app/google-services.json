@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "21965272259",
+    "firebase_url": "https://jntua-world.firebaseio.com",
+    "project_id": "jntua-world",
+    "storage_bucket": "jntua-world.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:21965272259:android:c00a0cedf197526327de76",
+        "android_client_info": {
+          "package_name": "com.example.jntua_world"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "21965272259-ddv99jdjj6t88lonvja88u5ac47krbvj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.jntua_world",
+            "certificate_hash": "a6ac1dbf3c0620560465c37bf6ed665d64640e55"
+          }
+        },
+        {
+          "client_id": "21965272259-hlslkdokubmj22qk54ddvmtdsbbdfgji.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtNK3M1PAqpK0EWwAfpuFBDbPjlH00qPw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "21965272259-hlslkdokubmj22qk54ddvmtdsbbdfgji.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
