@@ -1,6 +1,7 @@
 import 'package:jntua_world/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'cloudFirestore_services.dart';
 
 class AuthService {
   final FirebaseAuth _fbauthIntance = FirebaseAuth.instance;
@@ -64,6 +65,8 @@ class AuthService {
       AuthResult authResult =
           await _fbauthIntance.signInWithCredential(credential);
       user = authResult.user;
+      final cfsInstance = CloudFiresotreService(uid: user.uid);
+      cfsInstance.setNewuserData();
       return user;
     } catch (error) {
       switch (error.code) {
