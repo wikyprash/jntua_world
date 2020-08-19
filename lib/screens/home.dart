@@ -1,6 +1,8 @@
+import 'package:jntua_world/models/user.dart';
 import 'package:jntua_world/screens/displayResults.dart';
-import 'package:jntua_world/services/auth_services.dart';
+import 'package:jntua_world/screens/profile.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -8,9 +10,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
-  bool loading = false;
-
   @override
   void dispose() {
     myRollNoController.dispose();
@@ -20,78 +19,41 @@ class _HomeState extends State<Home> {
   final myRollNoController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final AuthService _authService = AuthService();
-    return loading
-        ? Center(
-            child: CircularProgressIndicator(),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('JNTUA world'),
+        centerTitle: true,
+        elevation: 0,
+        actions: [
+          InkWell(
+            borderRadius: BorderRadius.circular(30),
+            onTap: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Profile()));
+            },
+            child: Container(
+              padding: EdgeInsets.all(15),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(100),
+                child: Image.network(Provider.of<User>(context).photoUrl),
+              ),
+            ),
           )
-        : Scaffold(
-            appBar: AppBar(
-              title: Text('JNTUA world'),
-              centerTitle: true,
-              elevation: 0,
-              actions: [
-                Builder(
-                  builder: (context) => IconButton(
-                    icon: Icon(Icons.person_outline),
-                    onPressed: () => Scaffold.of(context).openEndDrawer(),
-                    tooltip:
-                        MaterialLocalizations.of(context).openAppDrawerTooltip,
-                  ),
-                ),
-              ],
-            ),
-            endDrawer: Drawer(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 50,
-                  ),
-                  SizedBox(
-                    height: 100,
-                  ),
-                  Column(
-                    children: [
-                      RaisedButton(
-                        onPressed: () async => await _authService.signOut(),
-                        child: Text('LOGOUT'),
-                      ),
-                    ],
-                  )
-                ],
+        ],
+      ),
+      body: Center(
+        child: RaisedButton(
+          onPressed: () async {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DisplayAllResults(),
               ),
-            ),
-            body: SingleChildScrollView(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('HALL TICKET NUMBER : '),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextField(
-                        decoration:
-                            InputDecoration(hintText: 'Hall Ticket Number...'),
-                        controller: myRollNoController,
-                      ),
-                    ),
-                    RaisedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DisplayAllResults(
-                              rollNo: myRollNoController.text,
-                            ),
-                          ),
-                        );
-                      },
-                      child: Text('submit'),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
+            );
+          },
+          child: Text('show all results'),
+        ),
+      ),
+    );
   }
 }
