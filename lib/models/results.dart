@@ -1,15 +1,21 @@
 class Results {
+  final String displayName;
+  final String email;
+  final String photoUrl;
   final String studentName;
   final String hallTicketNo;
-  final List results;
+  final List resultsData;
 
-  Results({this.studentName, this.hallTicketNo, this.results});
+  Results({this.displayName, this.email, this.photoUrl, this.studentName, this.hallTicketNo, this.resultsData});
 
   factory Results.fromJson(Map<String, dynamic> json) {
     return Results(
-      studentName: json['user']['Student name'],
-      hallTicketNo: json['user']['Hall Ticket No'],
-      results: json['results'],
+      displayName: json['userAccountDetails']['displayName'],
+      email: json['userAccountDetails']['email'],
+      photoUrl: json['userAccountDetails']['photoUrl'],
+      studentName: json['results']['Student name'],
+      hallTicketNo: json['results']['Hall Ticket No'],
+      resultsData: json['results']['resultsData'],
     );
   }
 }

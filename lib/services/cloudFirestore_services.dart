@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:jntua_world/models/results.dart';
+import 'package:jntua_world/services/api_services.dart';
 
 class CloudFiresotreService {
   final String uid;
   CloudFiresotreService({this.uid});
 
-  final CollectionReference userCollection =
-      Firestore.instance.collection('users');
+  final CollectionReference userCollection = Firestore.instance.collection('users');
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future setNewuserData() async {
@@ -31,9 +32,27 @@ class CloudFiresotreService {
       },
     );
   }
+  
+  Future<Results> getDataFromFirestore() async {
+    FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
+    var docRef =
+        Firestore.instance.collection("users").document(firebaseUser.uid);
+    var data = await docRef.get();
+    return Results.fromJson(data.data);
+  }
+  
+  Future updateUserResultsData(String rollno, String uid) async {
+    Map json = await getDataFromAPI(rollno);
+    final String studentName = json['user']['Student name'];
+    final String hallTicketNo = json['user']['Hall Ticket No'];
+    final List resData = json['results'];
 
-  Future updateUserResultsData(String resultsData) async {
-    return await userCollection.document(uid).setData(
-        {'Student name': '', 'Hall Ticket No': '', 'resultsData': resultsData});
+    return await userCollection.document(uid).updateData({
+      'results': {
+        'Student name': studentName,
+        'Hall Ticket No': hallTicketNo,
+        'resultsData': resData
+      }
+    });
   }
 }
