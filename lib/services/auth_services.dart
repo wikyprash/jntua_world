@@ -65,8 +65,8 @@ class AuthService {
       AuthResult authResult =
           await _fbauthIntance.signInWithCredential(credential);
       user = authResult.user;
-      final cfsInstance = CloudFiresotreService(uid: user.uid);
-      cfsInstance.setNewuserData();
+      final cfsInstance = CloudFiresotreService();
+      cfsInstance.setNewuserData(user.uid);
       return user;
     } catch (error) {
       switch (error.code) {

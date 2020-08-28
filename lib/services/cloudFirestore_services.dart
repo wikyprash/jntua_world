@@ -1,22 +1,25 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:jntua_world/models/results.dart';
+import 'package:jntua_world/models/userDocument.dart';
 import 'package:jntua_world/services/api_services.dart';
 
 class CloudFiresotreService {
-  final String uid;
-  CloudFiresotreService({this.uid});
 
-  final CollectionReference userCollection = Firestore.instance.collection('users');
+  DocumentReference getDoc(String uid) {
+    final docRef = Firestore.instance.collection("users").document(uid);
+    return docRef;
+  }
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  Future setNewuserData() async {
+  Future setNewuserData(String uid) async {
     final _currentUser = await _auth.currentUser();
-    final _docRef = userCollection.document(uid);
+    final _docRef = getDoc(uid);
     _docRef.get().then(
       (docData) {
         if (!docData.exists) {
-          print('setNewuserData');
+          print('setting new user : setNewuserData()');
           _docRef.setData({
             'userAccountDetails': {
               'displayName': _currentUser.displayName,
@@ -32,27 +35,32 @@ class CloudFiresotreService {
       },
     );
   }
-  
-  Future<Results> getDataFromFirestore() async {
-    FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
-    var docRef =
-        Firestore.instance.collection("users").document(firebaseUser.uid);
-    var data = await docRef.get();
-    return Results.fromJson(data.data);
+
+  Future<UserDocumentModel> customUserDocumentObject(String uid) async {
+    var data = await getDoc(uid).get();
+    var enk = JsonEncoder().convert(data.data);
+    final userDocumentModel = userDocumentModelFromJson(enk);
+    return userDocumentModel;
   }
-  
-  Future updateUserResultsData(String rollno, String uid) async {
-    Map json = await getDataFromAPI(rollno);
+
+  updateUserResultsData(String rollno, String uid) async {
+    Map json = await ApiServices().getDataFromAPI(rollno);
     final String studentName = json['user']['Student name'];
     final String hallTicketNo = json['user']['Hall Ticket No'];
     final List resData = json['results'];
-
-    return await userCollection.document(uid).updateData({
+    print('updateUserResultsData to $uid');
+    await getDoc(uid).updateData({
       'results': {
         'Student name': studentName,
         'Hall Ticket No': hallTicketNo,
         'resultsData': resData
       }
     });
+  }
+
+  deleteUserResult(String uid) async{
+    getDoc(uid).updateData({
+      'results' : FieldValue.delete()
+    }).whenComplete(() => print('results deleted!!!'));
   }
 }

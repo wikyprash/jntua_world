@@ -1,7 +1,8 @@
 import 'package:jntua_world/models/user.dart';
-import 'package:jntua_world/screens/displayResults.dart';
-import 'package:jntua_world/screens/profile.dart';
+import 'package:jntua_world/screens/dashboard.dart';
+import 'package:jntua_world/screens/me.dart';
 import 'package:flutter/material.dart';
+import 'package:jntua_world/screens/settings.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
@@ -10,6 +11,18 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  int selectedIndex = 0;
+  static const List<Widget> _widgetOptions = <Widget>[
+    Dashboard(),
+    Me(),
+  ];
+
+  void onItemTapped(int index) {
+    setState(() {
+      selectedIndex = index;
+    });
+  }
+
   @override
   void dispose() {
     myRollNoController.dispose();
@@ -29,7 +42,7 @@ class _HomeState extends State<Home> {
             borderRadius: BorderRadius.circular(30),
             onTap: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Profile()));
+                  context, MaterialPageRoute(builder: (context) => Settings()));
             },
             child: Container(
               padding: EdgeInsets.all(15),
@@ -42,18 +55,36 @@ class _HomeState extends State<Home> {
         ],
       ),
       body: Center(
-        child: RaisedButton(
-          onPressed: () async {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => DisplayAllResults(),
-              ),
-            );
-          },
-          child: Text('show all results'),
-        ),
+        child: _widgetOptions.elementAt(selectedIndex),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text('Home'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline),
+            title: Text('me'),
+          ),
+        ],
+        currentIndex: selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: onItemTapped,
+      ),
+      // Center(
+      //   child: RaisedButton(
+      //     onPressed: () async {
+      //       Navigator.push(
+      //         context,
+      //         MaterialPageRoute(
+      //           builder: (context) => DisplayAllResults(),
+      //         ),
+      //       );
+      //     },
+      //     child: Text('show all results'),
+      //   ),
+      // ),
     );
   }
 }

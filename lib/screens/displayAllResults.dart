@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:jntua_world/models/results.dart';
+import 'package:jntua_world/models/user.dart';
+import 'package:jntua_world/models/userDocument.dart';
 import 'package:jntua_world/services/cloudFirestore_services.dart';
+import 'package:provider/provider.dart';
 
 class DisplayAllResults extends StatefulWidget {
   @override
@@ -10,12 +12,13 @@ class DisplayAllResults extends StatefulWidget {
 class _DisplayAllResultsState extends State<DisplayAllResults> {
   CloudFiresotreService cfssInstance = CloudFiresotreService();
 
-  Future<Results> res;
+  Future<UserDocumentModel> res;
 
   @override
   void initState() {
     super.initState();
-    res = cfssInstance.getDataFromFirestore();
+    User user = Provider.of<User>(context, listen: false);
+    res = cfssInstance.customUserDocumentObject(user.uid);
   }
 
   @override
@@ -24,23 +27,24 @@ class _DisplayAllResultsState extends State<DisplayAllResults> {
       appBar: AppBar(
         title: Text('All Results'),
       ),
-      body: FutureBuilder<Results>(
+      body: FutureBuilder<UserDocumentModel>(
         future: res,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            List<ResultsData> data = snapshot.data.results.resultsData;
             return SingleChildScrollView(
               child: Container(
                 child: ListView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
-                  itemCount: snapshot.data.resultsData.length,
+                  itemCount: data.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
                       child: Column(
                         children: [
                           ListTile(
-                            title: Text(snapshot
-                                .data.resultsData[index]['title']
+                            title: Text(
+                                data[index].title
                                 .toString()),
                           ),
                           SingleChildScrollView(
@@ -59,25 +63,25 @@ class _DisplayAllResultsState extends State<DisplayAllResults> {
                               ],
                               rows: [
                                 for (var item
-                                    in snapshot.data.resultsData[index]['data'])
+                                    in data[index].data)
                                   DataRow(
                                     cells: [
                                       DataCell(Text(
-                                          '${item['Subject Code'].toString()}')),
+                                          '${item.subjectCode.toString()}')),
                                       DataCell(Text(
-                                          '${item['Subject Name'].toString()}')),
+                                          '${item.subjectName.toString()}')),
                                       DataCell(Text(
-                                          '${item['Internals'].toString()}')),
+                                          '${item.internals.toString()}')),
                                       DataCell(Text(
-                                          '${item['Externals'].toString()}')),
+                                          '${item.externals.toString()}')),
                                       DataCell(Text(
-                                          '${item['Total Marks'].toString()}')),
+                                          '${item.totalMarks.toString()}')),
                                       DataCell(Text(
-                                          '${item['Result Status'].toString()}')),
+                                          '${item.resultStatus.toString()}')),
                                       DataCell(Text(
-                                          '${item['Credits'].toString()}')),
+                                          '${item.credits.toString()}')),
                                       DataCell(
-                                          Text('${item['Grades'].toString()}')),
+                                          Text('${item.grades.toString()}')),
                                     ],
                                   ),
                               ],
@@ -96,7 +100,6 @@ class _DisplayAllResultsState extends State<DisplayAllResults> {
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
           }
-          // By default, show a loading spinner.
           return Center(child: CircularProgressIndicator());
         },
       ),
