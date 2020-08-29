@@ -1,8 +1,7 @@
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:jntua_world/models/userDocument.dart';
+import 'package:jntua_world/models/userDocumentModel.dart';
 import 'package:jntua_world/services/api_services.dart';
 
 class CloudFiresotreService {
@@ -43,7 +42,7 @@ class CloudFiresotreService {
     return userDocumentModel;
   }
 
-  updateUserResultsData(String rollno, String uid) async {
+  Future<void> updateUserResultsData(String rollno, String uid) async {
     Map json = await ApiServices().getDataFromAPI(rollno);
     final String studentName = json['user']['Student name'];
     final String hallTicketNo = json['user']['Hall Ticket No'];
@@ -58,7 +57,7 @@ class CloudFiresotreService {
     });
   }
 
-  deleteUserResult(String uid) async{
+  Future<void> deleteUserResult(String uid) async{
     getDoc(uid).updateData({
       'results' : FieldValue.delete()
     }).whenComplete(() => print('results deleted!!!'));

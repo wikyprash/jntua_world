@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:jntua_world/models/user.dart';
 import 'package:jntua_world/screens/displayAllResults.dart';
+import 'package:jntua_world/screens/publishedResults.dart';
 import 'package:jntua_world/services/cloudFirestore_services.dart';
 import 'package:provider/provider.dart';
 
@@ -23,8 +24,7 @@ class Dashboard extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: InkWell(
                 onTap: () async {
-                  DocumentSnapshot doc =
-                      await cfsi.getDoc(user.uid).get();
+                  DocumentSnapshot doc = await cfsi.getDoc(user.uid).get();
                   if (doc.data['results'] != null) {
                     Navigator.push(
                         context,
@@ -41,6 +41,20 @@ class Dashboard extends StatelessWidget {
                   width: double.infinity,
                   color: Colors.blue[300],
                   child: Center(child: Text('all resutls')),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: InkWell(
+                onTap: () async {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => PublishedResults()));
+                },
+                child: Container(
+                  height: 100,
+                  width: double.infinity,
+                  color: Colors.blue[300],
+                  child: Center(child: Text('published results')),
                 ),
               ),
             ),
