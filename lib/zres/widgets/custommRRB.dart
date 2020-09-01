@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jntua_world/res/colors.dart';
+import 'package:jntua_world/zres/colors.dart';
 
 class CustomRRB extends StatelessWidget {
   CustomRRB({@required this.onPressed, this.txt = 'click', this.radius = 30.0});

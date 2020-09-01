@@ -12,13 +12,13 @@ class AllResults extends StatefulWidget {
 class _AllResultsState extends State<AllResults> {
   CloudFiresotreService cfssInstance = CloudFiresotreService();
 
-  Future<UserDocumentModel> res;
+  Future<UserDocumentModel> userDocumentModel;
 
   @override
   void initState() {
     super.initState();
     User user = Provider.of<User>(context, listen: false);
-    res = cfssInstance.customUserDocumentObject(user.uid);
+    userDocumentModel = cfssInstance.customUserDocumentObject(user.uid);
   }
 
   @override
@@ -28,7 +28,7 @@ class _AllResultsState extends State<AllResults> {
         title: Text('All Results'),
       ),
       body: FutureBuilder<UserDocumentModel>(
-        future: res,
+        future: userDocumentModel,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<ResultsData> data = snapshot.data.results.resultsData;

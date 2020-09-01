@@ -8,7 +8,8 @@ class ApiServices {
 
   Future<Map<dynamic, dynamic>> getDataFromAPI(String rollno) async {
     String routeName = '/allAttemptedResults';
-    String path = '$apiDomain$routeName?rollno=163g1a0505';
+    String path = '$apiDomain$routeName?rollno=$rollno';
+    print('calling api');
     final resp = await http.get(Uri.encodeFull(path));
     if (resp.statusCode == 200) {
       print(resp.statusCode);

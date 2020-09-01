@@ -1,6 +1,6 @@
 import 'package:jntua_world/models/user.dart';
 import 'package:jntua_world/screens/authentication.dart';
-import 'package:jntua_world/screens/home.dart';
+import 'package:jntua_world/screens/dashboard.dart';
 import 'package:jntua_world/services/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -39,7 +39,7 @@ class AuthHandler extends StatelessWidget {
     if (user == null) {
       return Authenticate();
     } else {
-      return Home();
+      return Dashboard();
     }
   }
 }
