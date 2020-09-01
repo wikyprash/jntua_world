@@ -5,7 +5,6 @@ import 'package:jntua_world/models/userDocumentModel.dart';
 import 'package:jntua_world/services/api_services.dart';
 
 class CloudFiresotreService {
-
   DocumentReference getDoc(String uid) {
     final docRef = Firestore.instance.collection("users").document(uid);
     return docRef;
@@ -43,6 +42,10 @@ class CloudFiresotreService {
   }
 
   Future<void> updateUserResultsData(String rollno, String uid) async {
+    print('deleting current results');
+    await deleteUserResult(uid);
+    print('deleted current results');
+    print('calling getDataFromAPI()');
     Map json = await ApiServices().getDataFromAPI(rollno);
     final String studentName = json['user']['Student name'];
     final String hallTicketNo = json['user']['Hall Ticket No'];
@@ -57,9 +60,8 @@ class CloudFiresotreService {
     });
   }
 
-  Future<void> deleteUserResult(String uid) async{
-    getDoc(uid).updateData({
-      'results' : FieldValue.delete()
-    }).whenComplete(() => print('results deleted!!!'));
+  Future<void> deleteUserResult(String uid) async {
+    await getDoc(uid).updateData({'results': FieldValue.delete()}).whenComplete(
+        () => print('results deleted!!!'));
   }
 }
