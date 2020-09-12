@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:jntua_world/models/user.dart';
-import 'package:jntua_world/screens/all_results.dart';
-import 'package:jntua_world/screens/publishedResults.dart';
+import 'package:jntua_world/screens/db_item/all_results.dart';
+import 'package:jntua_world/screens/db_item/published_results.dart';
+import 'package:jntua_world/screens/edit_details.dart';
 import 'package:jntua_world/screens/me.dart';
 import 'package:jntua_world/services/cloudFirestore_services.dart';
 import 'package:provider/provider.dart';
@@ -40,9 +41,11 @@ class Dashboard extends StatelessWidget {
                                   MaterialPageRoute(
                                       builder: (context) => AllResults()));
                             } else {
-                              final snackBar = SnackBar(
-                                  content: Text('results not available'));
-                              Scaffold.of(context).showSnackBar(snackBar);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Edit()));
+                              // Scaffold.of(context).showSnackBar(SnackBar(content: Text('results not available')));
                             }
                           },
                           child: Container(
@@ -140,7 +143,8 @@ class ProfileCard extends StatelessWidget {
                         ),
                         Text(
                           user.email,
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.w600),
                         ),
                       ],
                     ),
