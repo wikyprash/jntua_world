@@ -92,11 +92,7 @@ class _MeState extends State<Me> {
                             child: Column(
                               children: [
                                 RaisedButton(
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [Text('htn'), Icon(Icons.edit)],
-                                  ),
+                                  child: Text('enter hall ticket no.'),
                                   onPressed: () {
                                     Navigator.push(
                                         context,
