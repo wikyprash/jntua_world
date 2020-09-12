@@ -10,7 +10,7 @@ class Edit extends StatefulWidget {
 }
 
 class _EditState extends State<Edit> {
-  TextEditingController htncntrlr =  TextEditingController();
+  TextEditingController htncntrlr = TextEditingController();
   User user;
   Future<UserDocumentModel> userDoc;
   CloudFiresotreService cfsi = CloudFiresotreService();
@@ -21,6 +21,7 @@ class _EditState extends State<Edit> {
     user = Provider.of<User>(context, listen: false);
     userDoc = cfsi.customUserDocumentObject(user.uid);
   }
+
   @override
   void dispose() {
     htncntrlr.dispose();
@@ -49,7 +50,7 @@ class _EditState extends State<Edit> {
         ),
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
-                  child: Container(
+          child: Container(
             child: Form(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -90,7 +91,8 @@ class _EditState extends State<Edit> {
                           print('>updating hall ticket no.');
                           print(htncntrlr.text);
                           await CloudFiresotreService().updateUserResultsData(
-                              htncntrlr.text, Provider.of<User>(context, listen: false).uid);
+                              htncntrlr.text,
+                              Provider.of<User>(context, listen: false).uid);
                           Navigator.pop(context);
                           print('updated<');
                         },
@@ -106,7 +108,11 @@ class _EditState extends State<Edit> {
                     ),
                   ),
                   SizedBox(height: 50),
-                  RaisedButton(onPressed: () => CloudFiresotreService().deleteUserResult(user.uid))
+                  RaisedButton(
+                    child: Text('delete !!!'),
+                    onPressed: () =>
+                        CloudFiresotreService().deleteUserResult(user.uid),
+                  )
                 ],
               ),
             ),

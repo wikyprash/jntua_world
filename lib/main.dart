@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: Scaffold(
+          backgroundColor: Color(0xFF181818),
           body: AuthHandler(),
         ),
       ),
