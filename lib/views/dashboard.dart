@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:jntua_world/models/user.dart';
-import 'package:jntua_world/screens/all_results.dart';
-import 'package:jntua_world/screens/publishedResults.dart';
-import 'package:jntua_world/screens/me.dart';
+import 'package:jntua_world/views/db_item/all_results.dart';
+import 'package:jntua_world/views/db_item/published_results.dart';
+import 'package:jntua_world/views/edit_details.dart';
+import 'package:jntua_world/views/me.dart';
 import 'package:jntua_world/services/cloudFirestore_services.dart';
 import 'package:provider/provider.dart';
 
@@ -40,9 +41,11 @@ class Dashboard extends StatelessWidget {
                                   MaterialPageRoute(
                                       builder: (context) => AllResults()));
                             } else {
-                              final snackBar = SnackBar(
-                                  content: Text('results not available'));
-                              Scaffold.of(context).showSnackBar(snackBar);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Edit()));
+                              // Scaffold.of(context).showSnackBar(SnackBar(content: Text('results not available')));
                             }
                           },
                           child: Container(
@@ -53,7 +56,6 @@ class Dashboard extends StatelessWidget {
                               child: Text(
                                 'All Resutls',
                                 style: TextStyle(
-                                  color: Colors.white,
                                   fontSize: 35,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -82,7 +84,6 @@ class Dashboard extends StatelessWidget {
                               child: Text(
                                 'Published Results',
                                 style: TextStyle(
-                                  color: Colors.white,
                                   fontSize: 35,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -112,7 +113,7 @@ class ProfileCard extends StatelessWidget {
         Navigator.push(context, MaterialPageRoute(builder: (context) => Me()));
       },
       child: Container(
-        color: Color(0xff212121),
+        // color: Color(0xff212121),
         padding: EdgeInsets.all(15),
         child: Column(
           children: [
@@ -134,13 +135,11 @@ class ProfileCard extends StatelessWidget {
                         Text(
                           user.name,
                           style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold),
+                              fontSize: 30, fontWeight: FontWeight.bold),
                         ),
                         Text(
                           user.email,
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                          style: TextStyle(fontWeight: FontWeight.w600),
                         ),
                       ],
                     ),
@@ -152,7 +151,6 @@ class ProfileCard extends StatelessWidget {
                 Container(
                   child: Icon(
                     Icons.arrow_forward_ios,
-                    color: Colors.white,
                   ),
                 )
               ],

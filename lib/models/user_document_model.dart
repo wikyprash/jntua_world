@@ -1,10 +1,10 @@
-
 import 'dart:convert';
 
-UserDocumentModel userDocumentModelFromJson(String str) => UserDocumentModel.fromJson(json.decode(str));
+UserDocumentModel userDocumentModelFromJson(String str) =>
+    UserDocumentModel.fromJson(json.decode(str));
 
-String userDocumentModelToJson(UserDocumentModel data) => json.encode(data.toJson());
-
+String userDocumentModelToJson(UserDocumentModel data) =>
+    json.encode(data.toJson());
 
 class UserDocumentModel {
   UserAccountDetails userAccountDetails;

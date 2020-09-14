@@ -1,7 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
-import 'package:jntua_world/models/publishedResultsModel.dart';
+import 'package:jntua_world/models/published_results_model.dart';
 
 class ApiServices {
   String apiDomain = 'https://jntua-results-api.herokuapp.com';
@@ -26,7 +25,8 @@ class ApiServices {
     final resp = await http.get(Uri.encodeFull(path));
     if (resp.statusCode == 200) {
       var jsonObject = jsonDecode(resp.body);
-      final publishedResultsModel = publishedResultsModelFromJson(JsonEncoder().convert(jsonObject['published_results']));
+      final publishedResultsModel = publishedResultsModelFromJson(
+          JsonEncoder().convert(jsonObject['published_results']));
       return publishedResultsModel;
     } else {
       throw Exception('Failed to fetch Results');

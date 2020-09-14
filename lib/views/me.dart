@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:jntua_world/models/user.dart';
-import 'package:jntua_world/models/userDocumentModel.dart';
-import 'package:jntua_world/screens/edit_details.dart';
+import 'package:jntua_world/models/user_document_model.dart';
+import 'package:jntua_world/views/edit_details.dart';
 import 'package:jntua_world/services/auth_services.dart';
 import 'package:jntua_world/services/cloudFirestore_services.dart';
 import 'package:provider/provider.dart';
@@ -27,12 +27,9 @@ class _MeState extends State<Me> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          color: Colors.black54,
           icon: Icon(Icons.arrow_back_ios),
           onPressed: () {
             Navigator.pop(context);
@@ -40,7 +37,6 @@ class _MeState extends State<Me> {
         ),
         actions: [
           IconButton(
-            color: Colors.black54,
             icon: Icon(Icons.call_end),
             onPressed: () {
               AuthService().signOut();
@@ -48,7 +44,6 @@ class _MeState extends State<Me> {
             },
           ),
           IconButton(
-            color: Colors.black54,
             icon: Icon(Icons.settings),
             onPressed: () {
               Navigator.push(

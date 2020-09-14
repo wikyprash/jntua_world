@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:jntua_world/models/userDocumentModel.dart';
+import 'package:jntua_world/models/user_document_model.dart';
 import 'package:jntua_world/services/api_services.dart';
 
 class CloudFiresotreService {
