@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:jntua_world/controllers/dark_theme_provider.dart';
 import 'package:jntua_world/models/user.dart';
-import 'package:jntua_world/models/userDocumentModel.dart';
+import 'package:jntua_world/models/user_document_model.dart';
 import 'package:jntua_world/services/cloudFirestore_services.dart';
 import 'package:provider/provider.dart';
 
@@ -33,22 +34,18 @@ class _EditState extends State<Edit> {
     return Container(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
           title: Text(
             'Edit',
-            style: TextStyle(color: Colors.black45),
           ),
           centerTitle: true,
           elevation: 0,
           leading: IconButton(
-            color: Colors.black54,
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () {
               Navigator.pop(context);
             },
           ),
         ),
-        backgroundColor: Colors.white,
         body: SingleChildScrollView(
           child: Container(
             child: Form(
@@ -64,7 +61,7 @@ class _EditState extends State<Edit> {
                         SizedBox(height: 10),
                         Container(
                           decoration: BoxDecoration(
-                            color: Colors.black45,
+                            color: Colors.white60,
                             borderRadius: new BorderRadius.circular(10.0),
                           ),
                           child: Padding(
@@ -81,12 +78,11 @@ class _EditState extends State<Edit> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Container(
                       height: 50,
                       width: double.infinity,
                       child: RaisedButton(
-                        color: Colors.black,
                         onPressed: () async {
                           print('>updating hall ticket no.');
                           print(htncntrlr.text);
@@ -98,7 +94,6 @@ class _EditState extends State<Edit> {
                         },
                         child: Text(
                           'submit',
-                          style: TextStyle(color: Colors.white),
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: new BorderRadius.circular(18.0),
@@ -112,7 +107,25 @@ class _EditState extends State<Edit> {
                     child: Text('delete !!!'),
                     onPressed: () =>
                         CloudFiresotreService().deleteUserResult(user.uid),
-                  )
+                  ),
+                  SizedBox(height: 50),
+                  RaisedButton(
+                    child: Text('theme'),
+                    onPressed: () {
+                      final themeChange = Provider.of<DarkThemeProvider>(
+                          context,
+                          listen: false);
+                      if (themeChange.darkTheme) {
+                        setState(() {
+                          themeChange.darkTheme = false;
+                        });
+                      } else {
+                        setState(() {
+                          themeChange.darkTheme = true;
+                        });
+                      }
+                    },
+                  ),
                 ],
               ),
             ),

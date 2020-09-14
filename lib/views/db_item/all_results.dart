@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jntua_world/models/user.dart';
-import 'package:jntua_world/models/userDocumentModel.dart';
+import 'package:jntua_world/models/user_document_model.dart';
 import 'package:jntua_world/services/cloudFirestore_services.dart';
 import 'package:provider/provider.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jntua_world/models/publishedResultsModel.dart';
+import 'package:jntua_world/models/published_results_model.dart';
 import 'package:jntua_world/services/api_services.dart';
 
 class PublishedResults extends StatefulWidget {
