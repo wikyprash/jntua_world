@@ -5,9 +5,15 @@ import 'package:jntua_world/models/published_results_model.dart';
 class ApiServices {
   String apiDomain = 'https://jntua-results-api.herokuapp.com';
 
-  Future<Map<dynamic, dynamic>> getDataFromAPI(String rollno) async {
+  Future<Map<dynamic, dynamic>> getDataFromAPI({
+    String rollno,
+    String course,
+    String regulation,
+  }) async {
     String routeName = '/allAttemptedResults';
-    String path = '$apiDomain$routeName?rollno=$rollno';
+    String path =
+        '$apiDomain$routeName?rollno=$rollno&course=$course&regulation=$regulation';
+    print(path);
     print('calling api');
     final resp = await http.get(Uri.encodeFull(path));
     if (resp.statusCode == 200) {

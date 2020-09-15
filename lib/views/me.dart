@@ -87,7 +87,8 @@ class _MeState extends State<Me> {
                             child: Column(
                               children: [
                                 RaisedButton(
-                                  child: Text('enter hall ticket no.'),
+                                  child:
+                                      Text('hall ticket no. not available...'),
                                   onPressed: () {
                                     Navigator.push(
                                         context,

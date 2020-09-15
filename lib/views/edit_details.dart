@@ -3,7 +3,9 @@ import 'package:jntua_world/controllers/dark_theme_provider.dart';
 import 'package:jntua_world/models/user.dart';
 import 'package:jntua_world/models/user_document_model.dart';
 import 'package:jntua_world/services/cloudFirestore_services.dart';
+import 'package:jntua_world/zres/colors.dart';
 import 'package:provider/provider.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class Edit extends StatefulWidget {
   @override
@@ -11,10 +13,48 @@ class Edit extends StatefulWidget {
 }
 
 class _EditState extends State<Edit> {
-  TextEditingController htncntrlr = TextEditingController();
   User user;
   Future<UserDocumentModel> userDoc;
   CloudFiresotreService cfsi = CloudFiresotreService();
+  final RoundedLoadingButtonController _btnController =
+      RoundedLoadingButtonController();
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  List<String> courses = ["B.Tech"];
+  List<String> regulations = ["R15"];
+
+  TextEditingController htncntrlr = TextEditingController();
+  String courseSelected = "B.Tech";
+  String regulationSelected = "R15";
+  // String courseSelected;
+  // String regulationSelected;
+
+  void _doSomething() async {
+    FocusScope.of(context).unfocus();
+    print(htncntrlr.text);
+    print(courseSelected);
+    print(regulationSelected);
+    try {
+      if (_formKey.currentState.validate()) {
+        print('>updating hall ticket no.');
+        await CloudFiresotreService().updateUserResultsData(
+            uid: Provider.of<User>(context, listen: false).uid,
+            rollno: htncntrlr.text,
+            course: courseSelected,
+            regulation: regulationSelected);
+        Navigator.pop(context);
+        print('updated<');
+      } else {
+        print('invalid details');
+
+        // final snackBar = SnackBar(content: Text('Yay! A SnackBar!'));
+        // // Find the Scaffold in the widget tree and use it to show a SnackBar.
+        // Scaffold.of(context).showSnackBar(snackBar);
+
+        _btnController.reset();
+      }
+    } catch (e) {}
+  }
 
   @override
   void initState() {
@@ -46,9 +86,12 @@ class _EditState extends State<Edit> {
             },
           ),
         ),
-        body: SingleChildScrollView(
+        body: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () => FocusScope.of(context).unfocus(),
           child: Container(
             child: Form(
+              key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
@@ -58,49 +101,53 @@ class _EditState extends State<Edit> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text("Hall Ticket Number : "),
-                        SizedBox(height: 10),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white60,
-                            borderRadius: new BorderRadius.circular(10.0),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: TextFormField(
-                              controller: htncntrlr,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                              ),
+                        HallTicketField(htncntrlr: htncntrlr),
+                        Row(
+                          children: [
+                            SizedBox(width: 50),
+                            DropdownButton<String>(
+                              hint: Text('Course'),
+                              items: courses.map((String item) {
+                                return new DropdownMenuItem<String>(
+                                  value: item,
+                                  child: new Text(item),
+                                );
+                              }).toList(),
+                              onChanged: (String selectedItem) {
+                                setState(() {
+                                  this.courseSelected = selectedItem;
+                                });
+                              },
+                              value: courseSelected,
                             ),
-                          ),
+                            SizedBox(width: 50),
+                            DropdownButton<String>(
+                              hint: Text('Regulation'),
+                              items: regulations.map((String item) {
+                                return new DropdownMenuItem<String>(
+                                  value: item,
+                                  child: new Text(item),
+                                );
+                              }).toList(),
+                              onChanged: (String selectedItem) {
+                                setState(() {
+                                  this.regulationSelected = selectedItem;
+                                });
+                              },
+                              value: regulationSelected,
+                            ),
+                          ],
                         ),
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Container(
-                      height: 50,
-                      width: double.infinity,
-                      child: RaisedButton(
-                        onPressed: () async {
-                          print('>updating hall ticket no.');
-                          print(htncntrlr.text);
-                          await CloudFiresotreService().updateUserResultsData(
-                              htncntrlr.text,
-                              Provider.of<User>(context, listen: false).uid);
-                          Navigator.pop(context);
-                          print('updated<');
-                        },
-                        child: Text(
-                          'submit',
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(18.0),
-                          side: BorderSide(color: Colors.black12),
-                        ),
-                      ),
+                  RoundedLoadingButton(
+                    child: Text(
+                      'SUBMIT',
                     ),
+                    controller: _btnController,
+                    color: m01,
+                    onPressed: _doSomething,
                   ),
                   SizedBox(height: 50),
                   RaisedButton(
@@ -108,7 +155,7 @@ class _EditState extends State<Edit> {
                     onPressed: () =>
                         CloudFiresotreService().deleteUserResult(user.uid),
                   ),
-                  SizedBox(height: 50),
+                  SizedBox(height: 10),
                   RaisedButton(
                     child: Text('theme'),
                     onPressed: () {
@@ -129,6 +176,43 @@ class _EditState extends State<Edit> {
                 ],
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class HallTicketField extends StatelessWidget {
+  const HallTicketField({
+    Key key,
+    @required this.htncntrlr,
+  }) : super(key: key);
+
+  final TextEditingController htncntrlr;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(0, 5, 0, 15),
+      decoration: BoxDecoration(
+        color: Colors.white60,
+        borderRadius: new BorderRadius.circular(10.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: TextFormField(
+          validator: (String value) {
+            if (value.length != 10) {
+              return 'invalid ht no.';
+            }
+            return null;
+          },
+          autofocus: true,
+          controller: htncntrlr,
+          decoration: InputDecoration(
+            hintText: 'enter hall ticke number',
+            border: InputBorder.none,
           ),
         ),
       ),

@@ -113,7 +113,6 @@ class ProfileCard extends StatelessWidget {
         Navigator.push(context, MaterialPageRoute(builder: (context) => Me()));
       },
       child: Container(
-        // color: Color(0xff212121),
         padding: EdgeInsets.all(15),
         child: Column(
           children: [
