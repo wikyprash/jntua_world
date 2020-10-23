@@ -4,6 +4,7 @@ import 'package:jntua_world/models/user.dart';
 import 'package:jntua_world/models/user_document_model.dart';
 import 'package:jntua_world/views/edit_details.dart';
 import 'package:jntua_world/services/cloudFirestore_services.dart';
+import 'package:jntua_world/views/settings.dart';
 import 'package:jntua_world/zres/widgets/custommRRB.dart';
 import 'package:provider/provider.dart';
 
@@ -41,11 +42,10 @@ class _MeState extends State<Me> {
           IconButton(
             icon: Icon(Icons.settings),
             onPressed: () {
-              //TODO : settings page...
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => null),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Settings()),
+              );
             },
           ),
         ],
