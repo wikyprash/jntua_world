@@ -29,45 +29,101 @@ class _PublishedResultsState extends State<PublishedResults> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Published Results'),
-        centerTitle: true,
-      ),
-      body: FutureBuilder<List<PublishedResultsModel>>(
-          future: publishedResults,
-          builder: (c, s) {
-            if (s.hasData) {
-              var data = s.data;
-              return ListView.separated(
-                separatorBuilder: (BuildContext context, int index) =>
-                    Divider(height: 5),
-                itemCount: data.length,
-                itemBuilder: (c, i) {
-                  return InkWell(
-                    customBorder: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    onTap: () async {
-                      try {
-                        var url = data[i].url;
-                        launch(url);
-                      } catch (e) {
-                        print('error');
-                      }
-                    },
-                    child: ListTile(
-                      title: Text(data[i].title),
-                      subtitle: Text(convertDateTimeDisplay(
-                          data[i].publishdDate.toString())),
-                      trailing: Icon(Icons.launch),
-                    ),
-                  );
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Published Results'),
+          centerTitle: true,
+          bottom: TabBar(
+            indicatorColor: Colors.white,
+            tabs: [
+              Tab(text: 'your\'s'),
+              Tab(text: 'ALL'),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            Container(
+              child: FutureBuilder<List<PublishedResultsModel>>(
+                future: publishedResults,
+                builder: (c, s) {
+                  if (s.hasData) {
+                    var data = s.data
+                        .where((element) =>
+                            element.title.toLowerCase().contains('b.tech') &&
+                            element.title.toLowerCase().contains('r15'))
+                        .toList();
+                    return ListView.separated(
+                      separatorBuilder: (BuildContext context, int index) =>
+                          Divider(height: 5),
+                      itemCount: data.length,
+                      itemBuilder: (c, i) {
+                        return InkWell(
+                          customBorder: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          onTap: () async {
+                            try {
+                              var url = data[i].url;
+                              launch(url);
+                            } catch (e) {
+                              print('error');
+                            }
+                          },
+                          child: ListTile(
+                            title: Text(data[i].title),
+                            subtitle: Text(convertDateTimeDisplay(
+                                data[i].publishdDate.toString())),
+                            trailing: Icon(Icons.launch),
+                          ),
+                        );
+                      },
+                    );
+                  }
+                  return Center(child: Text('Loding ..'));
                 },
-              );
-            }
-            return Center(child: Text('Loding ..'));
-          }),
+              ),
+            ),
+            FutureBuilder<List<PublishedResultsModel>>(
+              future: publishedResults,
+              builder: (c, s) {
+                if (s.hasData) {
+                  var data = s.data;
+                  return ListView.separated(
+                    separatorBuilder: (BuildContext context, int index) =>
+                        Divider(height: 5),
+                    itemCount: data.length,
+                    itemBuilder: (c, i) {
+                      return InkWell(
+                        customBorder: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        onTap: () async {
+                          try {
+                            var url = data[i].url;
+                            launch(url);
+                          } catch (e) {
+                            print('error');
+                          }
+                        },
+                        child: ListTile(
+                          title: Text(data[i].title),
+                          subtitle: Text(convertDateTimeDisplay(
+                              data[i].publishdDate.toString())),
+                          trailing: Icon(Icons.launch),
+                        ),
+                      );
+                    },
+                  );
+                }
+                return Center(child: Text('Loding ..'));
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

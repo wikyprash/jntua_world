@@ -64,6 +64,8 @@ class CloudFiresotreService {
       'results': {
         'Student name': studentName,
         'Hall Ticket No': hallTicketNo,
+        'course': course,
+        'regulation': regulation,
         'resultsData': resData
       }
     });

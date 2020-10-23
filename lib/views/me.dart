@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:jntua_world/models/user.dart';
 import 'package:jntua_world/models/user_document_model.dart';
 import 'package:jntua_world/views/edit_details.dart';
-import 'package:jntua_world/services/auth_services.dart';
 import 'package:jntua_world/services/cloudFirestore_services.dart';
+import 'package:jntua_world/zres/widgets/custommRRB.dart';
 import 'package:provider/provider.dart';
 
 class Me extends StatefulWidget {
@@ -15,7 +15,7 @@ class Me extends StatefulWidget {
 class _MeState extends State<Me> {
   Future<UserDocumentModel> userDocumentModel;
   CloudFiresotreService cfsi = CloudFiresotreService();
-
+  var hallTkNo;
   User user;
   @override
   void initState() {
@@ -28,26 +28,24 @@ class _MeState extends State<Me> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text('ME'),
+        centerTitle: true,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.call_end),
-            onPressed: () {
-              AuthService().signOut();
-              Navigator.pop(context);
-            },
-          ),
-          IconButton(
             icon: Icon(Icons.settings),
             onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Edit()));
+              //TODO : settings page...
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => null),
+              // );
             },
           ),
         ],
@@ -72,14 +70,44 @@ class _MeState extends State<Me> {
                     .snapshots(),
                 builder: (c, s) {
                   if (s.hasData) {
-                    var data = s.data;
-                    print(data['userAccountDetails']);
+                    final data = s.data;
+                    final stdName = data['results']['Student name'];
+                    hallTkNo = data['results']['Hall Ticket No'];
+                    final course = data['results']['course'];
+                    final reg = data['results']['regulation'];
                     return data['results'] != null
                         ? Container(
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text(data['results']['Student name']),
-                                Text(data['results']['Hall Ticket No']),
+                                SizedBox(height: 20),
+                                Container(
+                                  // padding: EdgeInsets.only(left: 10),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      // Text('name'),
+                                      Text(stdName),
+                                      // Text('Hall tickent no :'),
+                                      Text('$hallTkNo'),
+                                      // Text('course : '),
+                                      Text('$course'),
+                                      // Text('reg : '),
+                                      Text('$reg'),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: 50),
+                                CustomRRB(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  Edit(htkno: hallTkNo)));
+                                    },
+                                    txt: 'Edit')
                               ],
                             ),
                           )
@@ -87,9 +115,9 @@ class _MeState extends State<Me> {
                             child: Column(
                               children: [
                                 RaisedButton(
-                                  child:
-                                      Text('hall ticket no. not available...'),
+                                  child: Text('enter details'),
                                   onPressed: () {
+                                    print(reg);
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -113,4 +141,31 @@ class _MeState extends State<Me> {
       ),
     );
   }
+}
+
+Widget btn(title, uri, [color = const Color.fromRGBO(68, 68, 76, .8)]) {
+  return Container(
+    child: Center(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 20,
+              fontFamily: 'Roboto',
+              color: Colors.black,
+            ),
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Icon(
+            Icons.edit,
+            color: Colors.black,
+          )
+        ],
+      ),
+    ),
+  );
 }

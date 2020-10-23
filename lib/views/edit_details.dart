@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jntua_world/controllers/dark_theme_provider.dart';
 import 'package:jntua_world/models/user.dart';
 import 'package:jntua_world/models/user_document_model.dart';
 import 'package:jntua_world/services/cloudFirestore_services.dart';
@@ -8,6 +7,9 @@ import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class Edit extends StatefulWidget {
+  final htkno;
+
+  const Edit({Key key, this.htkno}) : super(key: key);
   @override
   _EditState createState() => _EditState();
 }
@@ -61,6 +63,7 @@ class _EditState extends State<Edit> {
     super.initState();
     user = Provider.of<User>(context, listen: false);
     userDoc = cfsi.customUserDocumentObject(user.uid);
+    htncntrlr = TextEditingController(text: widget.htkno);
   }
 
   @override
@@ -80,7 +83,7 @@ class _EditState extends State<Edit> {
           centerTitle: true,
           elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
+            icon: Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.pop(context);
             },
@@ -149,30 +152,14 @@ class _EditState extends State<Edit> {
                     color: m01,
                     onPressed: _doSomething,
                   ),
-                  SizedBox(height: 50),
-                  RaisedButton(
-                    child: Text('delete !!!'),
-                    onPressed: () =>
-                        CloudFiresotreService().deleteUserResult(user.uid),
-                  ),
-                  SizedBox(height: 10),
-                  RaisedButton(
-                    child: Text('theme'),
-                    onPressed: () {
-                      final themeChange = Provider.of<DarkThemeProvider>(
-                          context,
-                          listen: false);
-                      if (themeChange.darkTheme) {
-                        setState(() {
-                          themeChange.darkTheme = false;
-                        });
-                      } else {
-                        setState(() {
-                          themeChange.darkTheme = true;
-                        });
-                      }
-                    },
-                  ),
+                  SizedBox(height: 100),
+                  // CustomRRB(
+                  //   txt: 'delete !!!!',
+                  //   onPressed: () {
+                  //     CloudFiresotreService().deleteUserResult(user.uid);
+                  //   },
+                  //   padding: EdgeInsets.symmetric(horizontal: 20),
+                  // ),
                 ],
               ),
             ),
