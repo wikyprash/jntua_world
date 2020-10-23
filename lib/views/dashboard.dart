@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:jntua_world/models/user.dart';
 import 'package:jntua_world/views/db_item/all_results.dart';
 import 'package:jntua_world/views/db_item/published_results.dart';
-import 'package:jntua_world/views/edit_details.dart';
+import 'package:jntua_world/views/edit_page.dart';
 import 'package:jntua_world/views/me.dart';
 import 'package:jntua_world/services/cloudFirestore_services.dart';
 import 'package:provider/provider.dart';

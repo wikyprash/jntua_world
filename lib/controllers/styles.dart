@@ -6,7 +6,7 @@ import 'package:jntua_world/zres/colors.dart';
 class Styles {
   static ThemeData themeData(bool isDarkTheme, BuildContext context) {
     return ThemeData(
-      primarySwatch: Colors.red,
+      primarySwatch: Colors.grey,
       primaryColor: isDarkTheme ? m00 : Colors.white,
       backgroundColor: isDarkTheme ? m00 : Color(0xffF1F5FB),
       indicatorColor: isDarkTheme ? Color(0xff0E1D36) : Color(0xffCBDCF8),
@@ -17,7 +17,7 @@ class Styles {
       focusColor: isDarkTheme ? Color(0xff0B2512) : Color(0xffA8DAB5),
       disabledColor: Colors.grey,
       textSelectionColor: isDarkTheme ? Colors.white : m00,
-      cardColor: isDarkTheme ? Color(0xFF151515) : Colors.white,
+      // cardColor: isDarkTheme ? Color(0xFF151515) : Colors.white,
       canvasColor: isDarkTheme ? m00 : Colors.grey[50],
       brightness: isDarkTheme ? Brightness.dark : Brightness.light,
       // buttonTheme: Theme.of(context).buttonTheme.copyWith(

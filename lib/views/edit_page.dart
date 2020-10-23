@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:jntua_world/models/user.dart';
 import 'package:jntua_world/models/user_document_model.dart';
 import 'package:jntua_world/services/cloudFirestore_services.dart';
-import 'package:jntua_world/zres/colors.dart';
 import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
@@ -31,7 +30,7 @@ class _EditState extends State<Edit> {
   // String courseSelected;
   // String regulationSelected;
 
-  void _doSomething() async {
+  void updateHTNumber() async {
     FocusScope.of(context).unfocus();
     print(htncntrlr.text);
     print(courseSelected);
@@ -149,17 +148,9 @@ class _EditState extends State<Edit> {
                       'SUBMIT',
                     ),
                     controller: _btnController,
-                    color: m01,
-                    onPressed: _doSomething,
+                    onPressed: updateHTNumber,
                   ),
                   SizedBox(height: 100),
-                  // CustomRRB(
-                  //   txt: 'delete !!!!',
-                  //   onPressed: () {
-                  //     CloudFiresotreService().deleteUserResult(user.uid);
-                  //   },
-                  //   padding: EdgeInsets.symmetric(horizontal: 20),
-                  // ),
                 ],
               ),
             ),

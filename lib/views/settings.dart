@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jntua_world/controllers/dark_theme_provider.dart';
+import 'package:jntua_world/models/user.dart';
 import 'package:jntua_world/services/auth_services.dart';
+import 'package:jntua_world/services/cloudFirestore_services.dart';
 import 'package:jntua_world/zres/widgets/custommRRB.dart';
 import 'package:provider/provider.dart';
 
@@ -10,6 +12,13 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+  User user;
+  @override
+  void initState() {
+    super.initState();
+    user = Provider.of<User>(context, listen: false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +30,7 @@ class _SettingsState extends State<Settings> {
           children: [
             CustomRRB(
               txt: 'Theme',
-              padding: EdgeInsets.symmetric(horizontal: 80, vertical: 20),
+              padding: EdgeInsets.symmetric(horizontal: 80),
               onPressed: () {
                 final themeChange =
                     Provider.of<DarkThemeProvider>(context, listen: false);
@@ -34,6 +43,14 @@ class _SettingsState extends State<Settings> {
                     themeChange.darkTheme = true;
                   });
                 }
+              },
+            ),
+            SizedBox(height: 10),
+            CustomRRB(
+              padding: EdgeInsets.symmetric(horizontal: 80),
+              txt: 'delete !!!!',
+              onPressed: () {
+                CloudFiresotreService().deleteUserResult(user.uid);
               },
             ),
             Expanded(
