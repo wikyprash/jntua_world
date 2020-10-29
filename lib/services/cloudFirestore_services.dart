@@ -41,12 +41,21 @@ class CloudFiresotreService {
     return userDocumentModel;
   }
 
-  Future<void> updateUserResultsData(String rollno, String uid) async {
+  Future<void> updateUserResultsData({
+    String uid,
+    String rollno,
+    String course,
+    String regulation,
+  }) async {
     print('deleting current results');
     await deleteUserResult(uid);
     print('deleted current results');
     print('calling getDataFromAPI()');
-    Map json = await ApiServices().getDataFromAPI(rollno);
+    Map json = await ApiServices().getDataFromAPI(
+      rollno: rollno,
+      course: course,
+      regulation: regulation,
+    );
     final String studentName = json['user']['Student name'];
     final String hallTicketNo = json['user']['Hall Ticket No'];
     final List resData = json['results'];
@@ -55,6 +64,8 @@ class CloudFiresotreService {
       'results': {
         'Student name': studentName,
         'Hall Ticket No': hallTicketNo,
+        'course': course,
+        'regulation': regulation,
         'resultsData': resData
       }
     });
