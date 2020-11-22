@@ -2,10 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:jntua_world/models/user.dart';
 import 'package:jntua_world/models/user_document_model.dart';
-import 'package:jntua_world/views/edit_page.dart';
+import 'package:jntua_world/views/edit_details.dart';
+import 'package:jntua_world/services/auth_services.dart';
 import 'package:jntua_world/services/cloudFirestore_services.dart';
-import 'package:jntua_world/views/settings.dart';
-import 'package:jntua_world/zres/widgets/custommRRB.dart';
 import 'package:provider/provider.dart';
 
 class Me extends StatefulWidget {
@@ -16,7 +15,7 @@ class Me extends StatefulWidget {
 class _MeState extends State<Me> {
   Future<UserDocumentModel> userDocumentModel;
   CloudFiresotreService cfsi = CloudFiresotreService();
-  var hallTkNo;
+
   User user;
   @override
   void initState() {
@@ -29,23 +28,26 @@ class _MeState extends State<Me> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ME'),
-        centerTitle: true,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back_ios),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
         actions: [
           IconButton(
+            icon: Icon(Icons.call_end),
+            onPressed: () {
+              AuthService().signOut();
+              Navigator.pop(context);
+            },
+          ),
+          IconButton(
             icon: Icon(Icons.settings),
             onPressed: () {
               Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Settings()),
-              );
+                  context, MaterialPageRoute(builder: (context) => Edit()));
             },
           ),
         ],
@@ -71,83 +73,37 @@ class _MeState extends State<Me> {
                 builder: (c, s) {
                   if (s.hasData) {
                     var data = s.data;
-                    if (data['results'] != null) {
-                      var stdName = data['results']['Student name'];
-                      hallTkNo = data['results']['Hall Ticket No'];
-                      var course = data['results']['course'];
-                      var reg = data['results']['regulation'];
-                      return data['results'] != null
-                          ? Container(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  SizedBox(height: 20),
-                                  Container(
-                                    // padding: EdgeInsets.only(left: 10),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        // Text('name'),
-                                        Text(stdName),
-                                        // Text('Hall tickent no :'),
-                                        Text('$hallTkNo'),
-                                        // Text('course : '),
-                                        Text('$course'),
-                                        // Text('reg : '),
-                                        Text('$reg'),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(height: 50),
-                                  CustomRRB(
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    Edit(htkno: hallTkNo)));
-                                      },
-                                      txt: 'Edit')
-                                ],
-                              ),
-                            )
-                          : Container(
-                              child: Column(
-                                children: [
-                                  RaisedButton(
-                                    child: Text('enter details'),
-                                    onPressed: () {
-                                      print(reg);
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => Edit()));
-                                    },
-                                  )
-                                ],
-                              ),
-                            );
-                    }
+                    print(data['userAccountDetails']);
+                    return data['results'] != null
+                        ? Container(
+                            child: Column(
+                              children: [
+                                Text(data['results']['Student name']),
+                                Text(data['results']['Hall Ticket No']),
+                              ],
+                            ),
+                          )
+                        : Container(
+                            child: Column(
+                              children: [
+                                RaisedButton(
+                                  child: Text('enter hall ticket no.'),
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Edit()));
+                                  },
+                                )
+                              ],
+                            ),
+                          );
                   } else if (s.hasError) {
                     print('error');
                   }
                   return Center(
-                      child: Container(
-                    child: Column(
-                      children: [
-                        RaisedButton(
-                          child: Text('enter details'),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Edit()));
-                          },
-                        )
-                      ],
-                    ),
-                  ));
+                    child: CircularProgressIndicator(),
+                  );
                 },
               ),
             )
