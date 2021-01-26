@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:jntua_world/models/user.dart';
+import 'package:jntua_world/services/cloudFirestore_services.dart';
 import 'package:jntua_world/views/db_item/all_results.dart';
 import 'package:jntua_world/views/db_item/published_results.dart';
 import 'package:jntua_world/views/edit_page.dart';
 import 'package:jntua_world/views/me.dart';
-import 'package:jntua_world/services/cloudFirestore_services.dart';
 import 'package:provider/provider.dart';
 
 class Dashboard extends StatelessWidget {
@@ -28,7 +28,10 @@ class Dashboard extends StatelessWidget {
                 child: Column(
                   children: [
                     AllResultsDbItem(cfsi: cfsi, user: user),
-                    PublishedResultsDbItem(),
+                    PublishedResultsDbItem(
+                      title: "published res",
+                      route: PublishedResults(),
+                    ),
                   ],
                 ),
               ),
@@ -88,8 +91,12 @@ class AllResultsDbItem extends StatelessWidget {
 }
 
 class PublishedResultsDbItem extends StatelessWidget {
+  final title;
+  final route;
   const PublishedResultsDbItem({
     Key key,
+    @required this.title,
+    @required this.route,
   }) : super(key: key);
 
   @override
@@ -100,7 +107,7 @@ class PublishedResultsDbItem extends StatelessWidget {
         child: InkWell(
           onTap: () async {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => PublishedResults()));
+                MaterialPageRoute(builder: (context) => route));
           },
           child: Container(
             height: 100,
@@ -108,7 +115,7 @@ class PublishedResultsDbItem extends StatelessWidget {
             color: Colors.grey,
             child: Center(
               child: Text(
-                'Published Results',
+                title,
                 style: TextStyle(
                   fontSize: 35,
                   fontWeight: FontWeight.bold,
