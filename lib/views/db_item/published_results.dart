@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:jntua_world/models/published_results_model.dart';
 import 'package:jntua_world/services/api_services.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class PublishedResults extends StatefulWidget {
   @override
@@ -82,8 +81,8 @@ class _PRTab1State extends State<PRTab1>
                   ),
                   onTap: () async {
                     try {
-                      var url = data[i].url;
-                      launch(url);
+                      // var url = data[i].url;
+                      // launch(url);
                     } catch (e) {
                       print('error');
                     }
@@ -152,8 +151,8 @@ class _PRTab2State extends State<PRTab2>
                 ),
                 onTap: () async {
                   try {
-                    var url = data[i].url;
-                    launch(url);
+                    // var url = data[i].url;
+                    // launch(url);
                   } catch (e) {
                     print('error');
                   }
