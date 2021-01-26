@@ -34,6 +34,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        // StreamProvider<User>.value(
+        //   value: AuthService().user,
+        // )
         StreamProvider<User>(
             create: (BuildContext context) => AuthService().user),
         ChangeNotifierProvider(create: (_) => themeChangeProvider)

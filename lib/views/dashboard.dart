@@ -4,7 +4,7 @@ import 'package:jntua_world/models/user.dart';
 import 'package:jntua_world/services/cloudFirestore_services.dart';
 import 'package:jntua_world/views/db_item/all_results.dart';
 import 'package:jntua_world/views/db_item/published_results.dart';
-import 'package:jntua_world/views/edit_page.dart';
+import 'package:jntua_world/views/edit_details.dart';
 import 'package:jntua_world/views/me.dart';
 import 'package:provider/provider.dart';
 
@@ -138,6 +138,7 @@ class ProfileCard extends StatelessWidget {
         Navigator.push(context, MaterialPageRoute(builder: (context) => Me()));
       },
       child: Container(
+        // color: Color(0xff212121),
         padding: EdgeInsets.all(15),
         child: Column(
           children: [
