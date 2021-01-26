@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:jntua_world/models/user.dart';
+import 'package:jntua_world/services/cloudFirestore_services.dart';
 import 'package:jntua_world/views/db_item/all_results.dart';
 import 'package:jntua_world/views/db_item/published_results.dart';
 import 'package:jntua_world/views/edit_details.dart';
 import 'package:jntua_world/views/me.dart';
-import 'package:jntua_world/services/cloudFirestore_services.dart';
 import 'package:provider/provider.dart';
 
 class Dashboard extends StatelessWidget {
@@ -27,71 +27,10 @@ class Dashboard extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
-                    // all results
-                    Container(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                          onTap: () async {
-                            DocumentSnapshot doc =
-                                await cfsi.getDoc(user.uid).get();
-                            if (doc.data['results'] != null) {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => AllResults()));
-                            } else {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Edit()));
-                              // Scaffold.of(context).showSnackBar(SnackBar(content: Text('results not available')));
-                            }
-                          },
-                          child: Container(
-                            height: 100,
-                            width: double.infinity,
-                            color: Colors.grey,
-                            child: Center(
-                              child: Text(
-                                'All Resutls',
-                                style: TextStyle(
-                                  fontSize: 35,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    // Published Results
-                    Container(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                          onTap: () async {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => PublishedResults()));
-                          },
-                          child: Container(
-                            height: 100,
-                            width: double.infinity,
-                            color: Colors.grey,
-                            child: Center(
-                              child: Text(
-                                'Published Results',
-                                style: TextStyle(
-                                  fontSize: 35,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                    AllResultsDbItem(cfsi: cfsi, user: user),
+                    PublishedResultsDbItem(
+                      title: "published res",
+                      route: PublishedResults(),
                     ),
                   ],
                 ),
@@ -99,6 +38,92 @@ class Dashboard extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class AllResultsDbItem extends StatelessWidget {
+  const AllResultsDbItem({
+    Key key,
+    @required this.cfsi,
+    @required this.user,
+  }) : super(key: key);
+
+  final CloudFiresotreService cfsi;
+  final User user;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: InkWell(
+          onTap: () async {
+            DocumentSnapshot doc = await cfsi.getDoc(user.uid).get();
+            if (doc.data['results'] != null) {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AllResults()));
+            } else {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Edit()));
+              // Scaffold.of(context).showSnackBar(SnackBar(content: Text('results not available')));
+            }
+          },
+          child: Container(
+            height: 100,
+            width: double.infinity,
+            color: Colors.grey,
+            child: Center(
+              child: Text(
+                'All Resutls',
+                style: TextStyle(
+                  fontSize: 35,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class PublishedResultsDbItem extends StatelessWidget {
+  final title;
+  final route;
+  const PublishedResultsDbItem({
+    Key key,
+    @required this.title,
+    @required this.route,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: InkWell(
+          onTap: () async {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => route));
+          },
+          child: Container(
+            height: 100,
+            width: double.infinity,
+            color: Colors.grey,
+            child: Center(
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: 35,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
